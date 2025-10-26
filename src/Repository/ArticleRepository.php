@@ -28,4 +28,13 @@ class ArticleRepository extends ServiceEntityRepository
 
         return $conn->fetchAllAssociative($sql);
     }
+
+    public function findAllWithAuthors(): array
+    {
+        return $this->createQueryBuilder('a')
+            ->select('a', 'u.username')
+            ->join('a.author', 'u')
+            ->getQuery()
+            ->getArrayResult();
+    }
 }
