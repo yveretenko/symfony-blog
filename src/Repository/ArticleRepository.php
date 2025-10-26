@@ -15,4 +15,17 @@ class ArticleRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Article::class);
     }
+
+    public function findAllWithAuthorsNative(): array
+    {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = '
+            SELECT a.id, a.title, a.description, u.username
+            FROM article a
+            JOIN user u ON a.author_id = u.id
+        ';
+
+        return $conn->fetchAllAssociative($sql);
+    }
 }
