@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Article Created{% endblock %}
+
+{% block body %}
+    <h1>Congratulations!</h1>
+    <p>Article successfully created with ID <strong>{{ id }}</strong>.</p>
+
+    <a href="{{ path('article_create') }}">Create another article</a>
+{% endblock %}

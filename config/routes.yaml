@@ -9,3 +9,11 @@ user_create:
 user_congratulation:
     path: /user/create/congratulation/{id}
     controller: App\Controller\UserController::congratulation
+
+article_create:
+    path: /article/create
+    controller: App\Controller\ArticleController::create
+
+article_congratulation:
+    path: /article/create/congratulation/{id}
+    controller: App\Controller\ArticleController::congratulation
