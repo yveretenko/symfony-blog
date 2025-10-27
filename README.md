@@ -23,7 +23,7 @@ cd symfony-blog
 
 ### 2. Copy environment file
 ```bash
-cp .env.example .env
+cp .env .env.local
 ```
 
 ### 3. Build and start Docker containers
