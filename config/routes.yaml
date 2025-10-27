@@ -1,5 +1,11 @@
 controllers:
-    resource:
-        path: ../src/Controller/
-        namespace: App\Controller
+    resource: ../src/Controller/
     type: attribute
+
+user_create:
+    path: /user/create
+    controller: App\Controller\UserController::create
+
+user_congratulation:
+    path: /user/create/congratulation/{id}
+    controller: App\Controller\UserController::congratulation
