@@ -16,7 +16,8 @@ readonly class UserService
         $user = (new User())
             ->setUsername($username)
             ->setFirstName($firstName)
-            ->setLastName($lastName);
+            ->setLastName($lastName)
+            ->setPassword($password ?? 'dummy');
 
         $this->em->persist($user);
         $this->em->flush();
