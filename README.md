@@ -37,6 +37,11 @@ docker exec -it symfony-php bash
 composer install
 ```
 
+### 5. Run migrations
+```bash
+docker compose exec php php bin/console doctrine:migrations:migrate
+```
+
 App runs at **http://localhost:8000**
 
 ---
