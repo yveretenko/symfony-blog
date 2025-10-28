@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Entity\Article;
 use App\Form\ArticleType;
 use App\Service\ArticleService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,15 +19,15 @@ class ArticleController extends AbstractController
     #[Route('/article/create', name: 'article_create')]
     public function create(Request $request): Response
     {
-        $form = $this->createForm(ArticleType::class);
+        $article = new Article();
+
+        $form = $this->createForm(ArticleType::class, $article);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
-
             $article = $this->articleService->createAndFlush(
-                $data['title'],
-                $data['description']
+                $article->getTitle(),
+                $article->getDescription()
             );
 
             return $this->redirectToRoute('article_congratulation', [

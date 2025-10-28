@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Form\UserType;
 use App\Service\UserService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,16 +19,16 @@ class UserController extends AbstractController
     #[Route('/user/create', name: 'user_create')]
     public function create(Request $request): Response
     {
-        $form = $this->createForm(UserType::class);
+        $user = new User();
+
+        $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
-
             $user = $this->userService->createAndFlush(
-                $data['username'],
-                $data['firstName'],
-                $data['lastName']
+                $user->getUsername(),
+                $user->getFirstName(),
+                $user->getLastName()
             );
 
             return $this->redirectToRoute('user_congratulation', [
