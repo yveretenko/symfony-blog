@@ -18,15 +18,13 @@ class ArticleRepository extends ServiceEntityRepository
 
     public function findAllWithAuthorsNative(): array
     {
-        $conn = $this->getEntityManager()->getConnection();
-
-        $sql = '
-            SELECT a.id, a.title, a.description, u.username
-            FROM article a
-            JOIN user u ON a.author_id = u.id
-        ';
-
-        return $conn->fetchAllAssociative($sql);
+        return $this->getEntityManager()
+            ->getConnection()
+            ->fetchAllAssociative(<<<SQL
+                SELECT a.id, a.title, a.description, u.username
+                FROM article a
+                JOIN user u ON a.author_id = u.id
+            SQL);
     }
 
     public function findAllWithAuthors(): array
