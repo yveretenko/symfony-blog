@@ -11,12 +11,14 @@ readonly class UserService
 {
     public function __construct(private EntityManagerInterface $em) {}
 
-    public function createAndFlush(string $username, string $firstName, string $lastName): User
+    // TODO: after authentication is implemented, make $password non-nullable
+    public function createAndFlush(string $username, string $firstName, string $lastName, ?string $password = null): User
     {
         $user = (new User())
             ->setUsername($username)
             ->setFirstName($firstName)
-            ->setLastName($lastName);
+            ->setLastName($lastName)
+            ->setPassword($password ?? 'dummy');
 
         $this->em->persist($user);
         $this->em->flush();
