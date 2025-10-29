@@ -11,7 +11,7 @@ readonly class UserService
 {
     public function __construct(private EntityManagerInterface $em) {}
 
-    public function createAndFlush(string $username, string $firstName, string $lastName): User
+    public function createAndFlush(string $username, string $firstName, string $lastName, ?string $password = null): User
     {
         $user = (new User())
             ->setUsername($username)
