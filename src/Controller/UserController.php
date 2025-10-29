@@ -25,20 +25,20 @@ class UserController extends AbstractController
         $form = $this->createForm(UserCreateFormType::class, $user);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $user = $this->userService->createAndFlush(
-                $user->getUsername(),
-                $user->getFirstName(),
-                $user->getLastName()
-            );
-
-            return $this->redirectToRoute('user_congratulation', [
-                'id' => $user->getId(),
+        if (!$form->isSubmitted() || !$form->isValid()) {
+            return $this->render('user/create.html.twig', [
+                'form' => $form->createView(),
             ]);
         }
 
-        return $this->render('user/create.html.twig', [
-            'form' => $form->createView(),
+        $user = $this->userService->createAndFlush(
+            $user->getUsername(),
+            $user->getFirstName(),
+            $user->getLastName()
+        );
+
+        return $this->redirectToRoute('user_congratulation', [
+            'id' => $user->getId(),
         ]);
     }
 

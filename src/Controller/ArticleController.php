@@ -21,23 +21,22 @@ class ArticleController extends AbstractController
     public function create(Request $request): Response
     {
         $article = new Article();
-
         $form = $this->createForm(ArticleCreateFormType::class, $article);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $article = $this->articleService->createAndFlush(
-                $article->getTitle(),
-                $article->getDescription()
-            );
-
-            return $this->redirectToRoute('article_congratulation', [
-                'id' => $article->getId(),
+        if (!$form->isSubmitted() || !$form->isValid()) {
+            return $this->render('article/create.html.twig', [
+                'form' => $form->createView(),
             ]);
         }
 
-        return $this->render('article/create.html.twig', [
-            'form' => $form->createView(),
+        $article = $this->articleService->createAndFlush(
+            $article->getTitle(),
+            $article->getDescription()
+        );
+
+        return $this->redirectToRoute('article_congratulation', [
+            'id' => $article->getId(),
         ]);
     }
 
