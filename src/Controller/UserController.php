@@ -35,6 +35,7 @@ class UserController extends AbstractController
             $user->getUsername(),
             $user->getFirstName(),
             $user->getLastName()
+            // TODO: after authentication is implemented, set the password hash here
         );
 
         return $this->redirectToRoute('user_congratulation', [

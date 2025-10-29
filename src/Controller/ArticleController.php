@@ -33,6 +33,7 @@ class ArticleController extends AbstractController
         $article = $this->articleService->createAndFlush(
             $article->getTitle(),
             $article->getDescription()
+            // TODO: after authentication is implemented, set the author here
         );
 
         return $this->redirectToRoute('article_congratulation', [

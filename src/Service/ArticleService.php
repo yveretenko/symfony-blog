@@ -12,6 +12,7 @@ readonly class ArticleService
 {
     public function __construct(private EntityManagerInterface $em) {}
 
+    // TODO: after authentication is implemented, make $author non-nullable
     public function createAndFlush(string $title, string $description, User $author = null): Article
     {
         $article = (new Article())

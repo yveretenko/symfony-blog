@@ -11,6 +11,7 @@ readonly class UserService
 {
     public function __construct(private EntityManagerInterface $em) {}
 
+    // TODO: after authentication is implemented, make $password non-nullable
     public function createAndFlush(string $username, string $firstName, string $lastName, ?string $password = null): User
     {
         $user = (new User())
