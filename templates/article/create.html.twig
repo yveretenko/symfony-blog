@@ -5,7 +5,15 @@
 {% block body %}
     <h1>Create Article</h1>
 
-    {{ form_start(form) }}
+    {{ form_start(form, {'method': 'POST', 'attr': {'data-turbo': 'false'}}) }}
     {{ form_widget(form) }}
     {{ form_end(form) }}
+
+    {% if errors is defined and errors|length > 0 %}
+        <ul>
+            {% for error in errors %}
+                <li><strong>{{ error.propertyPath }}:</strong> {{ error.message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
 {% endblock %}
