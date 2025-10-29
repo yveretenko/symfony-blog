@@ -12,11 +12,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
+#[Route('/user', name: 'user_')]
 class UserController extends AbstractController
 {
     public function __construct(private readonly UserService $userService) {}
 
-    #[Route('/user/create', name: 'user_create')]
+    #[Route('/create', name: 'create')]
     public function create(Request $request): Response
     {
         $user = new User();
@@ -41,7 +42,7 @@ class UserController extends AbstractController
         ]);
     }
 
-    #[Route('/user/create/congratulation/{id}', name: 'user_congratulation')]
+    #[Route('/create/congratulation/{id}', name: 'congratulation')]
     public function congratulation(int $id): Response
     {
         return $this->render('user/congratulation.html.twig', [
