@@ -61,13 +61,13 @@ You can create an admin user using the Symfony console:
 
 **Inside Docker (recommended):**
 ```bash
-docker compose exec php php bin/console app:create-admin-user <username> <firstName> <lastName>
+docker compose exec php php bin/console app:user:create-admin <username> <firstName> <lastName>
 ```
 
 Example:
 
 ```
-docker compose exec php php bin/console app:create-admin-user admin John Doe
+docker compose exec php php bin/console app:user:create-admin admin John Doe
 ```
 
 This command will insert a new user record into the database.

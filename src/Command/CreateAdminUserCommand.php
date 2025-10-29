@@ -12,7 +12,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 #[AsCommand(
-    name: 'app:create-admin-user',
+    name: 'app:user:create-admin',
     description: 'Creates a new admin user.',
 )]
 class CreateAdminUserCommand extends Command
