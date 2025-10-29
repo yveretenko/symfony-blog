@@ -1,19 +1,5 @@
 controllers:
-    resource: ../src/Controller/
+    resource:
+        path: ../src/Controller/
+        namespace: App\Controller
     type: attribute
-
-user_create:
-    path: /user/create
-    controller: App\Controller\UserController::create
-
-user_congratulation:
-    path: /user/create/congratulation/{id}
-    controller: App\Controller\UserController::congratulation
-
-article_create:
-    path: /article/create
-    controller: App\Controller\ArticleController::create
-
-article_congratulation:
-    path: /article/create/congratulation/{id}
-    controller: App\Controller\ArticleController::congratulation
