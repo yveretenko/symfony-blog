@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Entity\User;
 use App\Form\UserCreateFormType;
 use App\Service\UserService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,9 +19,7 @@ class UserController extends AbstractController
     #[Route('/create', name: 'create')]
     public function create(Request $request): Response
     {
-        $user = new User();
-
-        $form = $this->createForm(UserCreateFormType::class, $user);
+        $form = $this->createForm(UserCreateFormType::class);
         $form->handleRequest($request);
 
         if (!$form->isSubmitted() || !$form->isValid()) {
@@ -31,10 +28,12 @@ class UserController extends AbstractController
             ]);
         }
 
+        $formData = $form->getData();
+
         $user = $this->userService->createAndFlush(
-            $user->getUsername(),
-            $user->getFirstName(),
-            $user->getLastName()
+            $formData['username'] ?? '',
+            $formData['firstName'] ?? '',
+            $formData['lastName'] ?? ''
             // TODO: after authentication is implemented, set the password hash here
         );
 

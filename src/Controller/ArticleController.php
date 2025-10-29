@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Entity\Article;
 use App\Form\ArticleCreateFormType;
 use App\Service\ArticleService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,8 +19,7 @@ class ArticleController extends AbstractController
     #[Route('/create', name: 'create')]
     public function create(Request $request): Response
     {
-        $article = new Article();
-        $form = $this->createForm(ArticleCreateFormType::class, $article);
+        $form = $this->createForm(ArticleCreateFormType::class);
         $form->handleRequest($request);
 
         if (!$form->isSubmitted() || !$form->isValid()) {
@@ -30,9 +28,11 @@ class ArticleController extends AbstractController
             ]);
         }
 
+        $formData = $form->getData();
+
         $article = $this->articleService->createAndFlush(
-            $article->getTitle(),
-            $article->getDescription()
+            $formData['title'] ?? '',
+            $formData['description'] ?? '',
             // TODO: after authentication is implemented, set the author here
         );
 
