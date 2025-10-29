@@ -36,6 +36,7 @@ class User
     private ?string $lastName = null;
 
     #[ORM\Column(length: 255)]
+    // TODO: after authentication is implemented, make this field required and validate it
     private ?string $password = null;
 
     /**
