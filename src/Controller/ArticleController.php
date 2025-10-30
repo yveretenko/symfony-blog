@@ -6,11 +6,13 @@ namespace App\Controller;
 
 use App\Entity\Article;
 use App\Form\ArticleCreateFormType;
+use App\Security\Voter\ArticleVoter;
 use App\Service\ArticleService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 #[Route('/article', name: 'article_')]
@@ -22,6 +24,7 @@ class ArticleController extends AbstractController
     ) {}
 
     #[Route('/create', name: 'create')]
+    #[IsGranted(ArticleVoter::CREATE)]
     public function create(Request $request): Response
     {
         $form = $this->createForm(ArticleCreateFormType::class);
