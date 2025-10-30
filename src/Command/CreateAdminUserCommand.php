@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use App\Entity\User;
 use App\Service\UserService;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 #[AsCommand(
     name: 'app:user:create-admin',
@@ -17,10 +20,13 @@ use Symfony\Component\Console\Output\OutputInterface;
 )]
 class CreateAdminUserCommand extends Command
 {
-    public function __construct(private readonly UserService $userService)
-    {
+    public function __construct(
+        private readonly UserService $userService,
+        private readonly ValidatorInterface $validator
+    ) {
         parent::__construct();
     }
+
 
     protected function configure(): void
     {
@@ -32,13 +38,36 @@ class CreateAdminUserCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $user = $this->userService->createAndFlush(
-            $input->getArgument('username'),
-            $input->getArgument('firstName'),
-            $input->getArgument('lastName')
-        );
+        $io = new SymfonyStyle($input, $output);
 
-        $output->writeln("<info>Admin user created with ID {$user->getId()}</info>");
+        $username  = $input->getArgument('username');
+        $firstName = $input->getArgument('firstName');
+        $lastName  = $input->getArgument('lastName');
+
+        $user = (new User())
+            ->setUsername($username)
+            ->setFirstName($firstName)
+            ->setLastName($lastName);
+
+        $errors = $this->validator->validate($user);
+
+        if (count($errors) > 0) {
+            $io->error('Validation failed:');
+
+            foreach ($errors as $error) {
+                $io->writeln(sprintf(
+                    ' - <comment>%s</comment>: %s',
+                    $error->getPropertyPath(),
+                    $error->getMessage()
+                ));
+            }
+
+            return Command::FAILURE;
+        }
+
+        $user = $this->userService->createAndFlush($username, $firstName, $lastName);
+
+        $io->success(sprintf('Admin user created successfully (ID: %d)', $user->getId()));
 
         return Command::SUCCESS;
     }
