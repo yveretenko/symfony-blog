@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Entity\Article;
+use App\Exception\ValidationException;
 use App\Form\ArticleCreateFormType;
 use App\Security\Voter\ArticleVoter;
 use App\Service\ArticleService;
@@ -19,7 +19,6 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class ArticleController extends AbstractController
 {
     public function __construct(
-        private readonly ValidatorInterface $validator,
         private readonly ArticleService $articleService,
     ) {}
 
@@ -38,25 +37,18 @@ class ArticleController extends AbstractController
 
         $formData = $form->getData();
 
-        $article = (new Article())
-            ->setTitle($formData['title'] ?? '')
-            ->setDescription($formData['description'] ?? '');
-        // TODO: after authentication is implemented, set the author here
-
-        $errors = $this->validator->validate($article);
-
-        if (count($errors) > 0) {
+        try {
+            $article = $this->articleService->validateAndFlush(
+                $formData['title'] ?? '',
+                $formData['description'] ?? '',
+                // TODO: after authentication is implemented, set the author here
+            );
+        } catch (ValidationException $e) {
             return $this->render('article/create.html.twig', [
                 'form'   => $form->createView(),
-                'errors' => $errors,
+                'errors' => $e->getErrors(),
             ]);
         }
-
-        $article = $this->articleService->createAndFlush(
-            $article->getTitle(),
-            $article->getDescription(),
-            // TODO: after authentication is implemented, pass the author here
-        );
 
         return $this->redirectToRoute('article_congratulation', [
             'id' => $article->getId(),
