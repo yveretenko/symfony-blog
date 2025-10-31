@@ -13,7 +13,8 @@ readonly class UserService
 {
     public function __construct(
         private EntityManagerInterface $em,
-        private ValidatorInterface $validator
+        private ValidatorInterface $validator,
+        private string $apiKey,
     ) {}
 
     // TODO: after authentication is implemented, make $password non-nullable
