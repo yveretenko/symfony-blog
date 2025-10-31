@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use App\Entity\User;
 use App\Exception\ValidationException;
 use App\Service\UserService;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -42,6 +43,8 @@ class CreateAdminUserCommand extends Command
                 $input->getArgument('username'),
                 $input->getArgument('firstName'),
                 $input->getArgument('lastName'),
+                null,
+                [User::ROLE_ADMIN]
             );
         } catch (ValidationException $e) {
             $io->error('Validation failed:');

@@ -54,6 +54,18 @@ App runs at **http://localhost:8000**
 
 ---
 
+## Roles
+
+The application defines three user roles:
+
+- `ROLE_USER` — automatically assigned to every user by default
+- `ROLE_ADMIN` — created via console command
+- `ROLE_BLOGGER` — assigned when a user is created through the /user/create UI form
+
+Each user always has at least ROLE_USER in addition to their specific roles.
+
+---
+
 ## Console commands
 
 ### Create admin user via console

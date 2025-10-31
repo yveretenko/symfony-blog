@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Exception\ValidationException;
 use App\Form\UserCreateFormType;
 use App\Service\UserService;
@@ -39,6 +40,8 @@ class UserController extends AbstractController
                 $formData['firstName'] ?? '',
                 $formData['lastName'] ?? '',
                 // TODO: after authentication is implemented, set password here
+                null,
+                [User::ROLE_BLOGGER]
             );
         } catch (ValidationException $e) {
             return $this->render('user/create.html.twig', [

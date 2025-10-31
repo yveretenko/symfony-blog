@@ -17,13 +17,14 @@ readonly class UserService
     ) {}
 
     // TODO: after authentication is implemented, make $password non-nullable
-    public function validateAndFlush(string $username, string $firstName, string $lastName, ?string $password = null): User
+    public function validateAndFlush(string $username, string $firstName, string $lastName, ?string $password = null, array $roles = []): User
     {
         $user = (new User())
             ->setUsername($username)
             ->setFirstName($firstName)
             ->setLastName($lastName)
-            ->setPassword($password ?? 'dummy');
+            ->setPassword($password ?? 'dummy')
+            ->setRoles($roles);
 
         $errors = $this->validator->validate($user);
 
