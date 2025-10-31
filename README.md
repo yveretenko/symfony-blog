@@ -51,3 +51,23 @@ App runs at **http://localhost:8000**
 - `master` – protected branch (production-ready code)
 - `feature/*` – feature branches per task
 - Each task → separate **Pull Request → master**
+
+---
+
+## Console commands
+
+### Create admin user via console
+You can create an admin user using the Symfony console:
+
+**Inside Docker (recommended):**
+```bash
+docker compose exec php php bin/console app:user:create-admin <username> <firstName> <lastName>
+```
+
+Example:
+
+```
+docker compose exec php php bin/console app:user:create-admin admin John Doe
+```
+
+This command will insert a new user record into the database.

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Exception\ValidationException;
 use App\Form\ArticleCreateFormType;
 use App\Service\ArticleService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,7 +15,9 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/article', name: 'article_')]
 class ArticleController extends AbstractController
 {
-    public function __construct(private readonly ArticleService $articleService) {}
+    public function __construct(
+        private readonly ArticleService $articleService,
+    ) {}
 
     #[Route('/create', name: 'create')]
     public function create(Request $request): Response
@@ -30,11 +33,18 @@ class ArticleController extends AbstractController
 
         $formData = $form->getData();
 
-        $article = $this->articleService->createAndFlush(
-            $formData['title'] ?? '',
-            $formData['description'] ?? '',
-            // TODO: after authentication is implemented, set the author here
-        );
+        try {
+            $article = $this->articleService->validateAndFlush(
+                $formData['title'] ?? '',
+                $formData['description'] ?? '',
+                // TODO: after authentication is implemented, set the author here
+            );
+        } catch (ValidationException $e) {
+            return $this->render('article/create.html.twig', [
+                'form'   => $form->createView(),
+                'errors' => $e->getErrors(),
+            ]);
+        }
 
         return $this->redirectToRoute('article_congratulation', [
             'id' => $article->getId(),
