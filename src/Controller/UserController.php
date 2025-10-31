@@ -53,6 +53,8 @@ class UserController extends AbstractController
             $user->getUsername(),
             $user->getFirstName(),
             $user->getLastName(),
+            null,
+            [User::ROLE_BLOGGER]
         );
 
         return $this->redirectToRoute('user_congratulation', [

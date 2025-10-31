@@ -47,7 +47,8 @@ class CreateAdminUserCommand extends Command
         $user = (new User())
             ->setUsername($username)
             ->setFirstName($firstName)
-            ->setLastName($lastName);
+            ->setLastName($lastName)
+            ->setRoles([User::ROLE_ADMIN]);
 
         $errors = $this->validator->validate($user);
 
@@ -65,7 +66,7 @@ class CreateAdminUserCommand extends Command
             return Command::FAILURE;
         }
 
-        $user = $this->userService->createAndFlush($username, $firstName, $lastName);
+        $user = $this->userService->createAndFlush($username, $firstName, $lastName, null, [User::ROLE_ADMIN]);
 
         $io->success(sprintf('Admin user created successfully (ID: %d)', $user->getId()));
 
